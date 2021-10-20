@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh">
+<head>
+<title>源代码</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.kystu.equipment.servlet;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import com.dxzc.json.ArrayGen;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import com.dxzc.json.ObjectGen;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import com.kystu.equipment.GetPostTools;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import com.kystu.equipment.Tools;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import com.kystu.equipment.dao.DeviceDao;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.kystu.equipment.model.Device;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import com.kystu.equipment.model.DeviceReserve;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import com.kystu.equipment.model.DeviceReserveSet;<a name="line.10"></a>
+<span class="sourceLineNo">011</span><a name="line.11"></a>
+<span class="sourceLineNo">012</span>import javax.servlet.ServletException;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import javax.servlet.annotation.WebServlet;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import javax.servlet.http.HttpServletRequest;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import javax.servlet.http.HttpServletResponse;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import java.io.IOException;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import java.sql.Connection;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import java.sql.SQLException;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import java.util.List;<a name="line.19"></a>
+<span class="sourceLineNo">020</span><a name="line.20"></a>
+<span class="sourceLineNo">021</span>@WebServlet(name = "SelectDevice", value = "/selectDevice")<a name="line.21"></a>
+<span class="sourceLineNo">022</span>public class SelectDeviceServlet extends BaseServlet {<a name="line.22"></a>
+<span class="sourceLineNo">023</span>    @Override<a name="line.23"></a>
+<span class="sourceLineNo">024</span>    protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {<a name="line.24"></a>
+<span class="sourceLineNo">025</span>        resp.setContentType("application/json;charset=utf-8");<a name="line.25"></a>
+<span class="sourceLineNo">026</span>        GetPostTools tools = new GetPostTools(req);<a name="line.26"></a>
+<span class="sourceLineNo">027</span>        ObjectGen json = new ObjectGen();<a name="line.27"></a>
+<span class="sourceLineNo">028</span>        try {<a name="line.28"></a>
+<span class="sourceLineNo">029</span>            String localLike = tools.getParameter("localLike");<a name="line.29"></a>
+<span class="sourceLineNo">030</span>            if (localLike == null) {<a name="line.30"></a>
+<span class="sourceLineNo">031</span>                json.number("code", 1);<a name="line.31"></a>
+<span class="sourceLineNo">032</span>                return;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>            }<a name="line.33"></a>
+<span class="sourceLineNo">034</span>            int type;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>            try {<a name="line.35"></a>
+<span class="sourceLineNo">036</span>                type = Integer.parseInt(tools.getParameter("type"));<a name="line.36"></a>
+<span class="sourceLineNo">037</span>            } catch (NumberFormatException e) {<a name="line.37"></a>
+<span class="sourceLineNo">038</span>                json.number("code", 1);<a name="line.38"></a>
+<span class="sourceLineNo">039</span>                return;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>            }<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>            try (Connection connection = Tools.getConnection()) {<a name="line.42"></a>
+<span class="sourceLineNo">043</span>                DeviceDao deviceDao = new DeviceDao(connection);<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                List&lt;Device&gt; devices = deviceDao.selectDevice(type, localLike);<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                json.number("code", 0);<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                try (ArrayGen array = json.array("devices")) {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                    for (Device i : devices) {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                        try (ObjectGen object = array.object()) {<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                            object.number("uuid", i.uuid);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                            object.string("local", i.local);<a name="line.50"></a>
+<span class="sourceLineNo">051</span>                            try (ArrayGen reserves = object.array("reserves")) {<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                                for (DeviceReserve r : i.getReserves()) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                                    try (ObjectGen reserve = reserves.object()) {<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                                        reserve.number("start", r.start.getTime());<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                                        reserve.number("end", r.end.getTime());<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                                    }<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                                }<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                            }<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                        }<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                    }<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                }<a name="line.61"></a>
+<span class="sourceLineNo">062</span>            } catch (SQLException e) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                throw new RuntimeException(e);<a name="line.63"></a>
+<span class="sourceLineNo">064</span>            }<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        } finally {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>            resp.getWriter().print(json.toJson());<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    }<a name="line.68"></a>
+<span class="sourceLineNo">069</span>}<a name="line.69"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

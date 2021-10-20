@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+    <Resource
+            name="equipment"
+            type="javax.sql.DataSource"
+            maxIdle="0"
+            url="jdbc:mysql://106.15.57.106:3306/equipment"
+            driverClassName="com.mysql.cj.jdbc.Driver"
+            username="equipment_server"
+            password="123456"/>
+
+</Context>

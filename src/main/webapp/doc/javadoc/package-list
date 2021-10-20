@@ -1,0 +1,11 @@
+com.dxzc.json
+com.dxzc.tools
+com.kystu.equipment
+com.kystu.equipment.dao
+com.kystu.equipment.jdbc_old
+com.kystu.equipment.model
+com.kystu.equipment.servlet
+com.kystu.equipment.servlet_old.device1
+com.kystu.equipment.servlet_old.guest
+com.kystu.equipment.servlet_old.manager
+com.kystu.equipment.servlet_old.user
