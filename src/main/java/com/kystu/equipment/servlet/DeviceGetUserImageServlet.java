@@ -71,7 +71,7 @@ public class DeviceGetUserImageServlet extends BaseServlet {
                 int width = i.getWidth();
                 int height = i.getHeight();
                 int[] data = i.getRGB(0, 0, width, height, null, 0, width);
-                out.writeInt(0);
+                out.writeByte(0);
                 out.writeInt(width);
                 out.writeInt(height);
                 for (int x = 0; x < width * height; x++) {
@@ -82,11 +82,11 @@ public class DeviceGetUserImageServlet extends BaseServlet {
                     r >>= 3;
                     g >>= 2;
                     b >>= 3;
-                    int outClolor = (r << 11) | (g << 5) | b;
-                    out.writeShort(outClolor);
+                    int outColor = (b << 11) | (g << 5) | r;
+                    out.writeShort(outColor);
                 }
             } catch (IOException e) {
-                out.writeInt(6);
+                out.writeByte(6);
             }
 
         } catch (SQLException e) {

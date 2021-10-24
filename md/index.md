@@ -37,7 +37,7 @@ create table users
     password varchar(32)                        not null,
     name     varchar(16)                        null,
     reserves varchar(1024) default '{"set":[]}' not null,
-    image    varchar(128)                       null,
+    image    varchar(1024)                       null,
     constraint users_account_uindex
         unique (account)
 );
