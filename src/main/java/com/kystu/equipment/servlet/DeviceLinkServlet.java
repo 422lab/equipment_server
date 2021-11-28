@@ -24,7 +24,7 @@ public class DeviceLinkServlet extends BaseServlet {
     @Override
     protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=utf-8");
-        resp.setBufferSize(200);
+        resp.setBufferSize(400);
         GetPostTools tools = new GetPostTools(req);
         ObjectGen json = new ObjectGen();
         try {
@@ -61,7 +61,7 @@ public class DeviceLinkServlet extends BaseServlet {
                 }
                 DeviceReserve reserve = device.getReserve(now);
                 String newState = tools.getParameter("state");
-                if(newState != null){
+                if (newState != null) {
                     device.state = newState;
                 }
                 device.last = now;
@@ -71,13 +71,26 @@ public class DeviceLinkServlet extends BaseServlet {
 
                 if (reserve == null) {
                     json.number("state", 0);
-                    return;
+                    DeviceReserve near = device.getReserves().getNearReserve(now);
+                    if (near == null) {
+                        json.number("reserved", 0);
+                    }else{
+                        json.number("reserved", 1);
+                        User user = userDao.getUser(near.user);
+                        json.string("userAccount", user.account);
+                        json.string("userName", user.name);
+                        json.number("start", near.start.getTime());
+                        json.number("end", near.end.getTime());
+                    }
+                } else {
+                    json.number("state", 1);
+                    json.string("control", device.control);
+                    User user = userDao.getUser(reserve.user);
+                    json.string("userAccount", user.account);
+                    json.string("userName", user.name);
+                    json.number("start", reserve.start.getTime());
+                    json.number("end", reserve.end.getTime());
                 }
-                json.number("state", 1);
-                json.string("control", device.control);
-                User user = userDao.getUser(reserve.user);
-                json.string("userAccount", user.account);
-                json.string("userName", user.name);
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);

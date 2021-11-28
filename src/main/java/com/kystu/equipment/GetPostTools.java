@@ -1,8 +1,6 @@
 package com.kystu.equipment;
 
-import com.mysql.cj.xdevapi.DbDoc;
-import com.mysql.cj.xdevapi.JsonParser;
-import com.mysql.cj.xdevapi.JsonString;
+import com.mysql.cj.xdevapi.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -21,11 +19,13 @@ public class GetPostTools {
 
     public String getParameter(String key) {
         if (json != null) {
-            JsonString string = (JsonString) json.get(key);
-            if (string == null) {
+            JsonValue value = json.get(key);
+            if (value == null) {
                 return null;
+            } else if (value instanceof JsonString) {
+                return ((JsonString) value).getString();
             } else {
-                return string.getString();
+                return value.toFormattedString();
             }
         } else {
             return req.getParameter(key);

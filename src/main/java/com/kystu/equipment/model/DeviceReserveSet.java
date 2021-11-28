@@ -8,6 +8,7 @@ import com.mysql.cj.xdevapi.JsonArray;
 import com.mysql.cj.xdevapi.JsonValue;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -81,5 +82,10 @@ public class DeviceReserveSet implements Iterable<DeviceReserve> {
 
     public boolean removeReserve(Timestamp start, Timestamp end) {
         return set.removeIf(i -> Tools.equals(i.start, start) && Tools.equals(i.end, end));
+    }
+
+    public DeviceReserve getNearReserve(Timestamp now) {
+        removeBefore(now);
+        return set.stream().min(Comparator.comparing(a -> a.start)).orElse(null);
     }
 }

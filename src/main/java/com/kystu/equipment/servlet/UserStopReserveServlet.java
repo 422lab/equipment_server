@@ -34,16 +34,18 @@ public class UserStopReserveServlet extends BaseServlet {
                 json.number("code", 1);
                 return;
             }
-            int type;
             Timestamp start;
             Timestamp end;
             int device;
+            String startStr = tools.getParameter("start");
+            String endStr = tools.getParameter("end");
+            String deviceStr = tools.getParameter("device");
             try {
-                type = Integer.parseInt(tools.getParameter("type"));
-                start = new Timestamp(Long.parseLong(tools.getParameter("start")));
-                end = new Timestamp(Long.parseLong(tools.getParameter("end")));
-                device = Integer.parseInt(tools.getParameter("device"));
+                start = new Timestamp(Long.parseLong(startStr));
+                end = new Timestamp(Long.parseLong(endStr));
+                device = Integer.parseInt(deviceStr);
             } catch (NumberFormatException e) {
+                json.string("msg", "Parameter? start = " + startStr + ", end = " + endStr + ", device = " + deviceStr + e.toString());
                 json.number("code", 1);
                 return;
             }
@@ -65,7 +67,7 @@ public class UserStopReserveServlet extends BaseServlet {
                 boolean success = false;
                 for (Iterator<UseReserve> it = user.getReserve().iterator(); it.hasNext(); ) {
                     UseReserve r = it.next();
-                    if (r.type == type && Tools.equals(r.start, start) && Tools.equals(r.end, end)) {
+                    if (Tools.equals(r.start, start) && Tools.equals(r.end, end)) {
                         if (r.devices.removeIf(i -> i == device)) {
                             success = true;
                         }
@@ -79,8 +81,8 @@ public class UserStopReserveServlet extends BaseServlet {
                 userDao.updateUser(user);
                 if (success) {
                     Device removeDevice = deviceDao.getDeviceForUpdate(device);
-                    if (removeDevice.type == type && removeDevice.removeReserve(start, end)) {
-                        if(end.after(now)){
+                    if (removeDevice.removeReserve(start, end)) {
+                        if (end.after(now)) {
                             removeDevice.control = "{}";
                         }
                         deviceDao.updateDevice(removeDevice);

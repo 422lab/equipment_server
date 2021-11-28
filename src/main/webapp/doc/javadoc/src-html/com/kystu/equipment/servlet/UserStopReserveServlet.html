@@ -42,71 +42,73 @@
 <span class="sourceLineNo">034</span>                json.number("code", 1);<a name="line.34"></a>
 <span class="sourceLineNo">035</span>                return;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>            }<a name="line.36"></a>
-<span class="sourceLineNo">037</span>            int type;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>            Timestamp start;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>            Timestamp end;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>            int device;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>            try {<a name="line.41"></a>
-<span class="sourceLineNo">042</span>                type = Integer.parseInt(tools.getParameter("type"));<a name="line.42"></a>
-<span class="sourceLineNo">043</span>                start = new Timestamp(Long.parseLong(tools.getParameter("start")));<a name="line.43"></a>
-<span class="sourceLineNo">044</span>                end = new Timestamp(Long.parseLong(tools.getParameter("end")));<a name="line.44"></a>
-<span class="sourceLineNo">045</span>                device = Integer.parseInt(tools.getParameter("device"));<a name="line.45"></a>
-<span class="sourceLineNo">046</span>            } catch (NumberFormatException e) {<a name="line.46"></a>
-<span class="sourceLineNo">047</span>                json.number("code", 1);<a name="line.47"></a>
-<span class="sourceLineNo">048</span>                return;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>            }<a name="line.49"></a>
-<span class="sourceLineNo">050</span>            try (Connection connection = Tools.getConnection()) {<a name="line.50"></a>
-<span class="sourceLineNo">051</span>                connection.setAutoCommit(false);<a name="line.51"></a>
-<span class="sourceLineNo">052</span>                UserDao userDao = new UserDao(connection);<a name="line.52"></a>
-<span class="sourceLineNo">053</span>                DeviceDao deviceDao = new DeviceDao(connection);<a name="line.53"></a>
-<span class="sourceLineNo">054</span><a name="line.54"></a>
-<span class="sourceLineNo">055</span>                // 执行用户登录<a name="line.55"></a>
-<span class="sourceLineNo">056</span>                User user = userDao.getUserForUpdate(account);<a name="line.56"></a>
-<span class="sourceLineNo">057</span>                if (user == null) {<a name="line.57"></a>
-<span class="sourceLineNo">058</span>                    json.number("code", 2);<a name="line.58"></a>
-<span class="sourceLineNo">059</span>                    return;<a name="line.59"></a>
-<span class="sourceLineNo">060</span>                }<a name="line.60"></a>
-<span class="sourceLineNo">061</span>                if (!password.equals(user.password)) {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>                    json.number("code", 3);<a name="line.62"></a>
-<span class="sourceLineNo">063</span>                    return;<a name="line.63"></a>
-<span class="sourceLineNo">064</span>                }<a name="line.64"></a>
-<span class="sourceLineNo">065</span>                boolean success = false;<a name="line.65"></a>
-<span class="sourceLineNo">066</span>                for (Iterator&lt;UseReserve&gt; it = user.getReserve().iterator(); it.hasNext(); ) {<a name="line.66"></a>
-<span class="sourceLineNo">067</span>                    UseReserve r = it.next();<a name="line.67"></a>
-<span class="sourceLineNo">068</span>                    if (r.type == type &amp;&amp; Tools.equals(r.start, start) &amp;&amp; Tools.equals(r.end, end)) {<a name="line.68"></a>
-<span class="sourceLineNo">069</span>                        if (r.devices.removeIf(i -&gt; i == device)) {<a name="line.69"></a>
-<span class="sourceLineNo">070</span>                            success = true;<a name="line.70"></a>
-<span class="sourceLineNo">071</span>                        }<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                        if (r.devices.isEmpty()) {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>                            it.remove();<a name="line.73"></a>
-<span class="sourceLineNo">074</span>                        }<a name="line.74"></a>
-<span class="sourceLineNo">075</span>                    }<a name="line.75"></a>
-<span class="sourceLineNo">076</span>                }<a name="line.76"></a>
-<span class="sourceLineNo">077</span><a name="line.77"></a>
-<span class="sourceLineNo">078</span>                user.removeBefore(now);<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                userDao.updateUser(user);<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                if (success) {<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                    Device removeDevice = deviceDao.getDeviceForUpdate(device);<a name="line.81"></a>
-<span class="sourceLineNo">082</span>                    if (removeDevice.type == type &amp;&amp; removeDevice.removeReserve(start, end)) {<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                        if(end.after(now)){<a name="line.83"></a>
-<span class="sourceLineNo">084</span>                            removeDevice.control = "{}";<a name="line.84"></a>
-<span class="sourceLineNo">085</span>                        }<a name="line.85"></a>
-<span class="sourceLineNo">086</span>                        deviceDao.updateDevice(removeDevice);<a name="line.86"></a>
-<span class="sourceLineNo">087</span>                        connection.commit();<a name="line.87"></a>
-<span class="sourceLineNo">088</span>                        json.number("code", 0);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>                        return;<a name="line.89"></a>
-<span class="sourceLineNo">090</span>                    }<a name="line.90"></a>
-<span class="sourceLineNo">091</span>                }<a name="line.91"></a>
-<span class="sourceLineNo">092</span>                connection.rollback();<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                json.number("code", 4);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>            } catch (SQLException e) {<a name="line.94"></a>
-<span class="sourceLineNo">095</span>                throw new RuntimeException(e);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>            }<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        } finally {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>            resp.getWriter().println(json.toJson());<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        }<a name="line.99"></a>
-<span class="sourceLineNo">100</span>    }<a name="line.100"></a>
-<span class="sourceLineNo">101</span>}<a name="line.101"></a>
+<span class="sourceLineNo">037</span>            Timestamp start;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>            Timestamp end;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>            int device;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>            String startStr = tools.getParameter("start");<a name="line.40"></a>
+<span class="sourceLineNo">041</span>            String endStr = tools.getParameter("end");<a name="line.41"></a>
+<span class="sourceLineNo">042</span>            String deviceStr = tools.getParameter("device");<a name="line.42"></a>
+<span class="sourceLineNo">043</span>            try {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>                start = new Timestamp(Long.parseLong(startStr));<a name="line.44"></a>
+<span class="sourceLineNo">045</span>                end = new Timestamp(Long.parseLong(endStr));<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                device = Integer.parseInt(deviceStr);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>            } catch (NumberFormatException e) {<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                json.string("msg", "Parameter? start = " + startStr + ", end = " + endStr + ", device = " + deviceStr + e.toString());<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                json.number("code", 1);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                return;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>            }<a name="line.51"></a>
+<span class="sourceLineNo">052</span>            try (Connection connection = Tools.getConnection()) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                connection.setAutoCommit(false);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                UserDao userDao = new UserDao(connection);<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                DeviceDao deviceDao = new DeviceDao(connection);<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>                // 执行用户登录<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                User user = userDao.getUserForUpdate(account);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                if (user == null) {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                    json.number("code", 2);<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                    return;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                }<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                if (!password.equals(user.password)) {<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                    json.number("code", 3);<a name="line.64"></a>
+<span class="sourceLineNo">065</span>                    return;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>                }<a name="line.66"></a>
+<span class="sourceLineNo">067</span>                boolean success = false;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>                for (Iterator&lt;UseReserve&gt; it = user.getReserve().iterator(); it.hasNext(); ) {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>                    UseReserve r = it.next();<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                    if (Tools.equals(r.start, start) &amp;&amp; Tools.equals(r.end, end)) {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                        if (r.devices.removeIf(i -&gt; i == device)) {<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                            success = true;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                        }<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                        if (r.devices.isEmpty()) {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                            it.remove();<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                        }<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                    }<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                }<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>                user.removeBefore(now);<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                userDao.updateUser(user);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                if (success) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                    Device removeDevice = deviceDao.getDeviceForUpdate(device);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                    if (removeDevice.removeReserve(start, end)) {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                        if (end.after(now)) {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                            removeDevice.control = "{}";<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                        }<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                        deviceDao.updateDevice(removeDevice);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                        connection.commit();<a name="line.89"></a>
+<span class="sourceLineNo">090</span>                        json.number("code", 0);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                        return;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                    }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>                }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>                connection.rollback();<a name="line.94"></a>
+<span class="sourceLineNo">095</span>                json.number("code", 4);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>            } catch (SQLException e) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                throw new RuntimeException(e);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>            }<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        } finally {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            resp.getWriter().println(json.toJson());<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        }<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    }<a name="line.102"></a>
+<span class="sourceLineNo">103</span>}<a name="line.103"></a>
 
 
 

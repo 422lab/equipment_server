@@ -50,6 +50,7 @@ public class UserReserveDeviceServlet extends BaseServlet {
             String password = tools.getParameter("password");
             if (account == null || password == null) {
                 json.number("code", 1);
+                json.string("msg", "account or password");
                 return;
             }
             UseReserve reserve;
@@ -60,6 +61,7 @@ public class UserReserveDeviceServlet extends BaseServlet {
                 }
             } catch (RuntimeException e) {
                 json.number("code", 1);
+                json.string("msg", "json?" + e.toString());
                 return;
             }
             Calendar calendar = Calendar.getInstance();
@@ -67,6 +69,7 @@ public class UserReserveDeviceServlet extends BaseServlet {
             calendar.add(Calendar.MINUTE, 5);
             if (calendar.getTime().after(reserve.end)) {
                 json.number("code", 1);
+                json.string("msg", "reserve time");
                 return;
             }
             calendar.setTime(now);
@@ -78,6 +81,7 @@ public class UserReserveDeviceServlet extends BaseServlet {
 
             if (reserve.devices.isEmpty()) {
                 json.number("code", 1);
+                json.string("msg", "reserve device");
                 return;
             }
 
