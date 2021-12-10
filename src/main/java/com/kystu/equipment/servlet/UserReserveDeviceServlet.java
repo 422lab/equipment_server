@@ -66,15 +66,19 @@ public class UserReserveDeviceServlet extends BaseServlet {
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(reserve.start);
-            calendar.add(Calendar.MINUTE, 5);
+            calendar.add(Calendar.MINUTE, 1);
             if (calendar.getTime().after(reserve.end)) {
                 json.number("code", 1);
                 json.string("msg", "reserve time");
                 return;
             }
             calendar.setTime(now);
-            calendar.add(Calendar.HOUR, 12);
+            calendar.add(Calendar.DAY_OF_MONTH, 7);
             Timestamp dead = new Timestamp(calendar.getTime().getTime());
+            if (dead.before(reserve.start)) {
+                json.number("code", 1);
+                json.string("msg", "start too late");
+            }
             if (dead.before(reserve.end)) {
                 reserve.end = dead;
             }

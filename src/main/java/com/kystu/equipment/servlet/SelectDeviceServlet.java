@@ -47,7 +47,9 @@ public class SelectDeviceServlet extends BaseServlet {
                     for (Device i : devices) {
                         try (ObjectGen object = array.object()) {
                             object.number("uuid", i.uuid);
+                            object.string("description", i.description);
                             object.string("local", i.local);
+                            object.number("last", i.last.getTime());
                             try (ArrayGen reserves = object.array("reserves")) {
                                 for (DeviceReserve r : i.getReserves()) {
                                     try (ObjectGen reserve = reserves.object()) {

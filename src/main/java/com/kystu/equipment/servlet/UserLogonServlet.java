@@ -3,7 +3,6 @@ package com.kystu.equipment.servlet;
 import com.dxzc.json.ObjectGen;
 import com.kystu.equipment.GetPostTools;
 import com.kystu.equipment.Tools;
-import com.kystu.equipment.dao.DeviceDao;
 import com.kystu.equipment.dao.UserDao;
 import com.kystu.equipment.model.User;
 
@@ -15,8 +14,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(name = "UserGetReserve", value = "/userGetReserve")
-public class UserGetReserveServlet extends BaseServlet {
+@WebServlet(name = "UserLogon", value = "/userLogon")
+public class UserLogonServlet extends BaseServlet {
+
     @Override
     protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=utf-8");
@@ -30,29 +30,21 @@ public class UserGetReserveServlet extends BaseServlet {
                 return;
             }
             try (Connection connection = Tools.getConnection()) {
-                connection.setAutoCommit(false);
                 UserDao userDao = new UserDao(connection);
-                DeviceDao deviceDao = new DeviceDao(connection);
-
-                // 执行用户登录
-                User user = userDao.getUser(account);
-                if (user == null) {
+                User user = new User();
+                user.account = account;
+                user.password = password;
+                if (userDao.insertUser(user)) {
+                    json.number("code", 0);
+                } else {
                     json.number("code", 2);
-                    return;
-                }
-                if (!password.equals(user.password)) {
-                    json.number("code", 3);
-                    return;
-                }
-                json.number("code", 0);
-                try (ObjectGen r = json.object("reserved")) {
-                    user.getReserve().toJson(r);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         } finally {
-            resp.getWriter().println(json.toJson());
+            resp.getWriter().print(json.toJson());
         }
     }
+
 }

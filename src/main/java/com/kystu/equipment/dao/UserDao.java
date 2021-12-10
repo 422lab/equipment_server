@@ -20,6 +20,14 @@ public class UserDao extends Dao {
         super(connection);
     }
 
+    public boolean insertUser(User user) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("insert users (account, password) values (?, ?);")) {
+            statement.setString(1, user.account);
+            statement.setString(2, user.password);
+            return statement.executeUpdate() != 0;
+        }
+    }
+
     public int updateUser(User user) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("update users set type = ?, account = ?, password = ?, name = ?, reserves = ?, image = ? where uuid = ?;")) {
             statement.setInt(1, user.type);
