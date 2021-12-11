@@ -150,22 +150,28 @@ public class UserReserveDeviceServlet extends BaseServlet {
                     }
                 }
                 user.removeBefore(now);
-                user.getReserve().add(reserve);
+                if (success.size() != 0) {
+                    user.getReserve().add(reserve);
+                }
                 userDao.updateUser(user);
                 connection.commit();
-                json.number("code", 0);
-                try (ArrayGen array = json.array("fails")) {
-                    for (int f : fails) {
-                        array.number(f);
+                if (success.size() == 0) {
+                    json.number("code", 5);
+                } else {
+                    json.number("code", 0);
+                    try (ArrayGen array = json.array("fails")) {
+                        for (int f : fails) {
+                            array.number(f);
+                        }
                     }
-                }
-                try (ArrayGen array = json.array("success")) {
-                    for (int f : success) {
-                        array.number(f);
+                    try (ArrayGen array = json.array("success")) {
+                        for (int f : success) {
+                            array.number(f);
+                        }
                     }
+                    json.number("start", reserve.start.getTime());
+                    json.number("end", reserve.end.getTime());
                 }
-                json.number("start", reserve.start.getTime());
-                json.number("end", reserve.end.getTime());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
