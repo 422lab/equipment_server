@@ -21,7 +21,7 @@ public class UserDao extends Dao {
     }
 
     public boolean insertUser(User user) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("insert users (account, password) values (?, ?);")) {
+        try (PreparedStatement statement = connection.prepareStatement("insert ignore into users (account, password) values (?, ?);")) {
             statement.setString(1, user.account);
             statement.setString(2, user.password);
             return statement.executeUpdate() != 0;

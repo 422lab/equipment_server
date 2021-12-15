@@ -23,6 +23,7 @@ public abstract class BaseServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Headers", "*");
         resp.setHeader("Access-Control-Expose-Headers", "*");
         resp.setCharacterEncoding("utf-8");
+        req.setCharacterEncoding("utf-8");
         super.service(req, resp);
     }
 

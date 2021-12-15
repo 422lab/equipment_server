@@ -7,7 +7,7 @@
             name="equipment"
             type="javax.sql.DataSource"
             maxIdle="0"
-            url="jdbc:mysql://106.15.57.106:3306/equipment"
+            url="jdbc:mysql://106.15.57.106:3306/equipment?characterEncoding=utf8"
             driverClassName="com.mysql.cj.jdbc.Driver"
             username="equipment_server"
             password="123456"/>
