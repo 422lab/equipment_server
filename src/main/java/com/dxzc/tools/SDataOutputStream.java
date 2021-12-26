@@ -23,7 +23,7 @@ public class SDataOutputStream extends FilterOutputStream implements DataOutput 
     }
 
 
-    public synchronized void write(byte b[], int off, int len)
+    public synchronized void write(byte[] b, int off, int len)
             throws IOException {
         out.write(b, off, len);
         incCount(len);
@@ -69,7 +69,7 @@ public class SDataOutputStream extends FilterOutputStream implements DataOutput 
         incCount(4);
     }
 
-    private final byte writeBuffer[] = new byte[8];
+    private final byte[] writeBuffer = new byte[8];
 
     public final void writeLong(long v) throws IOException {
         writeBuffer[0] = (byte) (v >>> 0);
