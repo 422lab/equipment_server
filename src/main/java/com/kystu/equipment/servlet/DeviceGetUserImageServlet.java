@@ -1,6 +1,6 @@
 package com.kystu.equipment.servlet;
 
-import com.dxzc.json.ObjectGen;
+import com.dxzc.tools.SDataOutputStream;
 import com.kystu.equipment.GetPostTools;
 import com.kystu.equipment.Tools;
 import com.kystu.equipment.dao.DeviceDao;
@@ -15,9 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -29,8 +27,8 @@ public class DeviceGetUserImageServlet extends BaseServlet {
     @Override
     protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/octet-stream");
-        resp.setBufferSize(20000);
-        DataOutput out = new DataOutputStream(resp.getOutputStream());
+        resp.setBufferSize(200000);
+        DataOutput out = new SDataOutputStream(resp.getOutputStream());
         GetPostTools tools = new GetPostTools(req);
         Timestamp now = Tools.currentTimestamp();
         int uuid;
@@ -40,7 +38,7 @@ public class DeviceGetUserImageServlet extends BaseServlet {
             out.writeByte(1);
             return;
         }
-        String password = req.getParameter("password");
+        String password = tools.getParameter("password");
         if (password == null) {
             out.writeByte(1);
             return;
