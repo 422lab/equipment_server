@@ -85,11 +85,11 @@ public class UserStopReserveServlet extends BaseServlet {
                         if (end.after(now)) {
                             removeDevice.control = "{}";
                         }
-                        deviceDao.updateDevice(removeDevice);
-                        connection.commit();
-                        json.number("code", 0);
-                        return;
                     }
+                    deviceDao.updateDevice(removeDevice);
+                    connection.commit();
+                    json.number("code", 0);
+                    return;
                 }
                 connection.rollback();
                 json.number("code", 4);

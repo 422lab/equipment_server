@@ -66,6 +66,13 @@ public class DeviceReserveSet implements Iterable<DeviceReserve> {
                 .collect(Collectors.toSet()), null);
     }
 
+    public DeviceReserve will(Timestamp timestamp) {
+        return set.stream()
+                .sorted(Comparator.comparing(a -> a.start))
+                .filter(reserve -> reserve.start.after(timestamp))
+                .findFirst().orElse(null);
+    }
+
     public boolean check(Timestamp start, Timestamp end) {
         for (DeviceReserve i : set) {
             if (i.end.after(start) && i.start.before(end)) {

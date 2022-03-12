@@ -66,8 +66,16 @@ public class UserControlDeviceServlet extends BaseServlet {
                 }
                 Timestamp now = Tools.currentTimestamp();
                 DeviceReserve reserve = device.getReserve(now);
-                if (reserve.user != user.uuid) {
-                    json.number("code", 4);
+                if (reserve != null && reserve.user != user.uuid) {
+                    // fixme: 没到时间也假装控制成功，只给数据
+                    reserve = device.getReserves().will(now);
+                    if (reserve != null && reserve.user != user.uuid) {
+                        json.number("code", 4);
+                        return;
+                    }
+                    json.number("code", 0);
+                    json.string("state", device.state);
+                    json.number("last", device.last.getTime());
                     return;
                 }
                 if (control != null) {
