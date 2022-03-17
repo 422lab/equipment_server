@@ -4,7 +4,8 @@
     border-width: 1px;
     border-style: solid;
     border-color: transparent;
-    transition: 400ms;
+    transition-property: border;
+    transition-duration: 400ms;
 }
 
 .frame:hover {
@@ -24,41 +25,63 @@ body {
     margin: 0;
     padding: 0;
     background: beige;
+    text-align: center;
 }
 
 input {
-    vertical-align:middle;
+    vertical-align: middle;
     outline: none;
     background: transparent;
     border-radius: 3px;
-    /*border-width: 1px;*/
-    /*border-style: solid;*/
-    border: none;
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 0 1px 1px rgba(35, 54, 86, 0.5);
     transition: 400ms;
     padding: 4px;
 }
 
 input:hover {
     background: hsla(0, 0%, 100%, 0.3);
-    box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.6);
+    box-shadow: none;
 }
 
 input:focus {
     background: hsla(0, 0%, 100%, 0.5);
     box-shadow: inset 0 1px 4px rgba(35, 54, 86, 0.3);
-    /*color: #6d757a;*/
+}
+
+button {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 10px;
+    transition: 400ms;
+    box-shadow: 0 1px 1px rgba(35, 54, 86, 0.5);
+}
+
+button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transition: none;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .login {
+    border-radius: 6px;
+    border-color: olive;
     display: inline-block;
     text-align: center;
+    width: 300px;
+    margin: 0 auto;
 }
 
 .login > div {
     display: inline-block;
-    position: relative;
+    text-align: center;
     width: 100%;
     margin: 0 auto;
-    padding: 10px;
+    padding: 10px 0;
 }
 
