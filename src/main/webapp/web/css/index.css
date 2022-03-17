@@ -1,0 +1,64 @@
+
+.frame {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    transition: 400ms;
+}
+
+.frame:hover {
+    border-color: cadetblue;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: beige;
+}
+
+input {
+    vertical-align:middle;
+    outline: none;
+    background: transparent;
+    border-radius: 3px;
+    /*border-width: 1px;*/
+    /*border-style: solid;*/
+    border: none;
+    transition: 400ms;
+    padding: 4px;
+}
+
+input:hover {
+    background: hsla(0, 0%, 100%, 0.3);
+    box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.6);
+}
+
+input:focus {
+    background: hsla(0, 0%, 100%, 0.5);
+    box-shadow: inset 0 1px 4px rgba(35, 54, 86, 0.3);
+    /*color: #6d757a;*/
+}
+
+.login {
+    display: inline-block;
+    text-align: center;
+}
+
+.login > div {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
