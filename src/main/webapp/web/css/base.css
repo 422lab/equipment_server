@@ -1,0 +1,69 @@
+
+.frame {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    transition-property: border;
+    transition-duration: 400ms;
+}
+
+.frame:hover {
+    border-color: cadetblue;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: beige;
+    text-align: center;
+}
+
+input {
+    vertical-align: middle;
+    outline: none;
+    background: transparent;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    box-shadow: 0 1px 1px rgba(35, 54, 86, 0.5);
+    transition: 400ms;
+    padding: 4px;
+}
+
+input:hover {
+    background: hsla(0, 0%, 100%, 0.3);
+    box-shadow: none;
+}
+
+input:focus {
+    background: hsla(0, 0%, 100%, 0.5);
+    box-shadow: inset 0 1px 4px rgba(35, 54, 86, 0.3);
+}
+
+button {
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 4px 10px;
+    transition: 400ms;
+    box-shadow: 0 1px 1px rgba(35, 54, 86, 0.5);
+}
+
+button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transition: none;
+    background: rgba(0, 0, 0, 0.2);
+}
