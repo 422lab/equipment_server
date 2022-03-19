@@ -15,6 +15,7 @@ async function login(event) {
     if (result.code === 0) {
         sessionStorage.setItem("account", account);
         sessionStorage.setItem("password", password);
+        sessionStorage.setItem("username", result.name);
         location.href = "user.html";
         return;
     }
@@ -24,4 +25,5 @@ async function login(event) {
 window.onload = function onload(event) {
     let loginButton = document.getElementById("login");
     loginButton.addEventListener("click", login);
-}
+};
+
