@@ -60,14 +60,14 @@
 
 #loginHit > .loginHitBlock {
     border-radius: 3px;
-    border-width: 1px;
+    border-width: 0;
     border-style: solid;
-    border-color: transparent;
-    padding: 5px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    padding: 8px;
     transform: translate(-50%, -50%);
     position: absolute;
     left: 50%;
     top: 50%;
     background: beige;
-    display: inline-block;
+    display: block;
 }
