@@ -8,8 +8,9 @@ async function login(event) {
     let password = document.getElementById("password").value;
     let bridge = new ServerBridge(account, password);
     let hit = document.getElementById("loginHit");
-    document.getElementById("failHit").style.visibility = "hidden";
     hit.style.display = "inline-block";
+    let failHit = document.getElementById("failHit");
+    failHit.style.visibility = "hidden";
     let result = await bridge.userLogin();
     hit.style.display = "none";
     if (result.code === 0) {
@@ -19,7 +20,7 @@ async function login(event) {
         location.href = "user.html";
         return;
     }
-    document.getElementById("failHit").style.visibility = "visible";
+    failHit.style.visibility = "visible";
 }
 
 window.onload = function onload(event) {

@@ -8,18 +8,19 @@
 .login {
     border-radius: 6px;
     border-color: olive;
-    display: inline-block;
+    display: block;
     text-align: center;
     width: max-content;
     margin: 0 auto;
 }
 
 .login > div {
-    display: inline-block;
+    display: block;
     text-align: center;
     width: max-content;
-    margin: 20px 50px;
-    padding: 0;
+    padding: 20px 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .login > div > label {
@@ -44,6 +45,7 @@
 
 #failHit {
     margin: 0;
+    padding: 0 40px;
     color: red;
 }
 

@@ -1,5 +1,9 @@
 let username = sessionStorage.getItem("username");
+if (username == null) {
+    location.href = "index.html";
+}
 
 onload = function onload(event) {
-    document.body.innerText += "欢迎 " + username;
+    let usernameDiv = document.getElementById("username");
+    usernameDiv.innerText = username;
 };
