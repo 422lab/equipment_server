@@ -70,4 +70,5 @@ button:hover {
 button:active {
     transition: none;
     background: rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
