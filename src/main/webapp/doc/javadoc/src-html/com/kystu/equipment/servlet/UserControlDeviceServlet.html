@@ -74,27 +74,35 @@
 <span class="sourceLineNo">066</span>                }<a name="line.66"></a>
 <span class="sourceLineNo">067</span>                Timestamp now = Tools.currentTimestamp();<a name="line.67"></a>
 <span class="sourceLineNo">068</span>                DeviceReserve reserve = device.getReserve(now);<a name="line.68"></a>
-<span class="sourceLineNo">069</span>                if (reserve.user != user.uuid) {<a name="line.69"></a>
-<span class="sourceLineNo">070</span>                    json.number("code", 4);<a name="line.70"></a>
-<span class="sourceLineNo">071</span>                    return;<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                }<a name="line.72"></a>
-<span class="sourceLineNo">073</span>                if (control != null) {<a name="line.73"></a>
-<span class="sourceLineNo">074</span>                    device.control = control;<a name="line.74"></a>
-<span class="sourceLineNo">075</span>                    deviceDao.updateDevice(device);<a name="line.75"></a>
-<span class="sourceLineNo">076</span>                    connection.commit();<a name="line.76"></a>
-<span class="sourceLineNo">077</span>                    connection.setAutoCommit(true);<a name="line.77"></a>
-<span class="sourceLineNo">078</span>                }<a name="line.78"></a>
-<span class="sourceLineNo">079</span>                json.number("code", 0);<a name="line.79"></a>
-<span class="sourceLineNo">080</span>                json.string("state", device.state);<a name="line.80"></a>
-<span class="sourceLineNo">081</span>                json.number("last", device.last.getTime());<a name="line.81"></a>
-<span class="sourceLineNo">082</span>            } catch (SQLException e) {<a name="line.82"></a>
-<span class="sourceLineNo">083</span>                throw new RuntimeException(e);<a name="line.83"></a>
-<span class="sourceLineNo">084</span>            }<a name="line.84"></a>
-<span class="sourceLineNo">085</span>        } finally {<a name="line.85"></a>
-<span class="sourceLineNo">086</span>            resp.getWriter().print(json.toJson());<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        }<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
-<span class="sourceLineNo">089</span>}<a name="line.89"></a>
+<span class="sourceLineNo">069</span>                if (reserve != null &amp;&amp; reserve.user != user.uuid) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                    // fixme: 没到时间也假装控制成功，只给数据<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                    reserve = device.getReserves().will(now);<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                    if (reserve != null &amp;&amp; reserve.user != user.uuid) {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                        json.number("code", 4);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>                        return;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>                    }<a name="line.75"></a>
+<span class="sourceLineNo">076</span>                    json.number("code", 0);<a name="line.76"></a>
+<span class="sourceLineNo">077</span>                    json.string("state", device.state);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>                    json.number("last", device.last.getTime());<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                    return;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>                }<a name="line.80"></a>
+<span class="sourceLineNo">081</span>                if (control != null) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>                    device.control = control;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>                    deviceDao.updateDevice(device);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>                    connection.commit();<a name="line.84"></a>
+<span class="sourceLineNo">085</span>                    connection.setAutoCommit(true);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>                }<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                json.number("code", 0);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>                json.string("state", device.state);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>                json.number("last", device.last.getTime());<a name="line.89"></a>
+<span class="sourceLineNo">090</span>            } catch (SQLException e) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>                throw new RuntimeException(e);<a name="line.91"></a>
+<span class="sourceLineNo">092</span>            }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        } finally {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            resp.getWriter().print(json.toJson());<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        }<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    }<a name="line.96"></a>
+<span class="sourceLineNo">097</span>}<a name="line.97"></a>
 
 
 

@@ -45,6 +45,7 @@ public class UserLoginServlet extends BaseServlet {
                     json.number("code", 3);
                 } else {
                     json.string("name", user.name);
+                    json.number("type", user.type);
                     json.number("code", 0);
                 }
             } catch (SQLException e) {

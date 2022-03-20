@@ -74,29 +74,36 @@
 <span class="sourceLineNo">066</span>                .collect(Collectors.toSet()), null);<a name="line.66"></a>
 <span class="sourceLineNo">067</span>    }<a name="line.67"></a>
 <span class="sourceLineNo">068</span><a name="line.68"></a>
-<span class="sourceLineNo">069</span>    public boolean check(Timestamp start, Timestamp end) {<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        for (DeviceReserve i : set) {<a name="line.70"></a>
-<span class="sourceLineNo">071</span>            if (i.end.after(start) &amp;&amp; i.start.before(end)) {<a name="line.71"></a>
-<span class="sourceLineNo">072</span>                return false;<a name="line.72"></a>
-<span class="sourceLineNo">073</span>            }<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        }<a name="line.74"></a>
-<span class="sourceLineNo">075</span>        return true;<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
-<span class="sourceLineNo">077</span><a name="line.77"></a>
-<span class="sourceLineNo">078</span>    @Override<a name="line.78"></a>
-<span class="sourceLineNo">079</span>    public Iterator&lt;DeviceReserve&gt; iterator() {<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        return set.iterator();<a name="line.80"></a>
-<span class="sourceLineNo">081</span>    }<a name="line.81"></a>
-<span class="sourceLineNo">082</span><a name="line.82"></a>
-<span class="sourceLineNo">083</span>    public boolean removeReserve(Timestamp start, Timestamp end) {<a name="line.83"></a>
-<span class="sourceLineNo">084</span>        return set.removeIf(i -&gt; Tools.equals(i.start, start) &amp;&amp; Tools.equals(i.end, end));<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    }<a name="line.85"></a>
-<span class="sourceLineNo">086</span><a name="line.86"></a>
-<span class="sourceLineNo">087</span>    public DeviceReserve getNearReserve(Timestamp now) {<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        removeBefore(now);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        return set.stream().min(Comparator.comparing(a -&gt; a.start)).orElse(null);<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
-<span class="sourceLineNo">091</span>}<a name="line.91"></a>
+<span class="sourceLineNo">069</span>    public DeviceReserve will(Timestamp timestamp) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>        return set.stream()<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                .sorted(Comparator.comparing(a -&gt; a.start))<a name="line.71"></a>
+<span class="sourceLineNo">072</span>                .filter(reserve -&gt; reserve.start.after(timestamp))<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                .findFirst().orElse(null);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public boolean check(Timestamp start, Timestamp end) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        for (DeviceReserve i : set) {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            if (i.end.after(start) &amp;&amp; i.start.before(end)) {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>                return false;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>            }<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        }<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        return true;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    @Override<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    public Iterator&lt;DeviceReserve&gt; iterator() {<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        return set.iterator();<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
+<span class="sourceLineNo">089</span><a name="line.89"></a>
+<span class="sourceLineNo">090</span>    public boolean removeReserve(Timestamp start, Timestamp end) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        return set.removeIf(i -&gt; Tools.equals(i.start, start) &amp;&amp; Tools.equals(i.end, end));<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    }<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>    public DeviceReserve getNearReserve(Timestamp now) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        removeBefore(now);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        return set.stream().min(Comparator.comparing(a -&gt; a.start)).orElse(null);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
+<span class="sourceLineNo">098</span>}<a name="line.98"></a>
 
 
 

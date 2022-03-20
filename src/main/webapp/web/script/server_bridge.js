@@ -48,7 +48,7 @@ class ServerBridge {
     /**
      * 执行用户登录验证.
      *
-     * @return {Promise<{code:number, name:string}>}
+     * @return {Promise<{code:number, name?:string, type?: number}>}
      */
     async userLogin() {
         return await ServerBridge.post("userLogin", {

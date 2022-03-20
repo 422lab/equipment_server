@@ -21,6 +21,18 @@ async function login(event) {
         return;
     }
     failHit.style.visibility = "visible";
+    if (result.code === 2) {
+    }
+    switch (result.code) {
+        case 2:
+            failHit.innerText = "没有此用户";
+            break;
+        case 3:
+            failHit.innerText = "密码错误";
+            break;
+        default:
+            failHit.innerText = "登录失败";
+    }
 }
 
 window.onload = function onload(event) {
