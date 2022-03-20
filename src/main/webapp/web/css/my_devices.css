@@ -26,3 +26,17 @@
     padding: 0 10px;
 
 }
+
+#myDevice {
+
+    border-width: 1px;
+    border-radius: 6px;
+    border-color: olive;
+    border-style: solid;
+
+    display: block;
+
+    width: 80%;
+    min-height: 100px;
+    margin: auto;
+}

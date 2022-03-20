@@ -17,7 +17,7 @@ async function login(event) {
         sessionStorage.setItem("account", account);
         sessionStorage.setItem("password", password);
         sessionStorage.setItem("username", result.name);
-        location.href = "user.html";
+        location.href = "my_devices.html";
         return;
     }
     failHit.style.visibility = "visible";
