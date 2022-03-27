@@ -6,9 +6,9 @@ if (username == null) {
     location.href = "index.html";
 }
 
-onload = function onload(event) {
+addEventListener("load", (event) => {
     let usernameDiv = document.getElementById("username");
     usernameDiv.innerText = username;
     let usertypeDiv = document.getElementById("usertype");
     usertypeDiv.innerText = userTypeName(usertype);
-};
+});

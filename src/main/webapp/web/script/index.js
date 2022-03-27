@@ -36,8 +36,8 @@ async function login(event) {
     }
 }
 
-window.onload = function onload(event) {
+addEventListener("load", (event) => {
     let loginButton = document.getElementById("login");
     loginButton.addEventListener("click", login);
-};
+});
 
