@@ -27,8 +27,11 @@
 .header_item > a {
     margin: 10px 0;
     color: black;
-    font-weight: bold;
     text-decoration: none;
+}
+
+.item_now > a {
+    font-weight: bold;
 }
 
 .item_now::after {
@@ -48,7 +51,6 @@
 
 #username {
     padding: 0 10px;
-
 }
 
 #myDevice {

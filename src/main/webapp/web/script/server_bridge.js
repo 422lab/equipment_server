@@ -58,3 +58,18 @@ class ServerBridge {
     }
 
 }
+
+/**
+ * 用户身份 id 转 string.
+ *
+ * @param type {number}
+ * @return {string}
+ */
+function userTypeName(type) {
+    switch (type) {
+        case 0:
+            return "同学";
+        default:
+            return "[未知用户]";
+    }
+}
