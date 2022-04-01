@@ -1,0 +1,23 @@
+
+#main {
+    display: block;
+}
+
+#content {
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 6px;
+    border-color: olive;
+    margin: 20px;
+}
+
+#has {
+    display: block;
+    text-align: left;
+    padding: 10px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: olive;
+    background: rgba(0, 0, 0, 0.1);
+}
