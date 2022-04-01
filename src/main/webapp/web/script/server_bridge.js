@@ -57,6 +57,18 @@ class ServerBridge {
         });
     }
 
+    /**
+     * 用户获取已预约设备.
+     *
+     * @return {Promise<{code:number, reserved?:[{devices:[number], type:number, start:number, end:number}]}>}
+     */
+    async userGetReserve() {
+        return await ServerBridge.post("userGetReserve", {
+            account: this.account,
+            password: this.password,
+        });
+    }
+
 }
 
 /**

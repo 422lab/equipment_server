@@ -5,6 +5,7 @@ let usertype = Number.parseInt(sessionStorage.getItem("usertype"));
 if (username == null) {
     location.href = "index.html";
 }
+let bridge = new ServerBridge(account, password);
 
 addEventListener("load", (event) => {
     let usernameDiv = document.getElementById("username");
