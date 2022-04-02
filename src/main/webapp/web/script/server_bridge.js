@@ -83,6 +83,18 @@ class ServerBridge {
         });
     }
 
+    /**
+     * 获取设备描述.
+     *
+     * @param device {number}
+     * @return {Promise<{code:number, type?:number, description?:string, local?:string, last?:number}>}
+     */
+    static async getDeviceDescription(device) {
+        return await ServerBridge.post("getDeviceDescription", {
+            device: device,
+        });
+    }
+
 }
 
 /**

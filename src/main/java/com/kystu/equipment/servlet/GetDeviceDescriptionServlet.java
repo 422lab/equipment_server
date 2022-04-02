@@ -47,6 +47,14 @@ public class GetDeviceDescriptionServlet extends BaseServlet {
                 json.string("description", device.description);
                 json.string("local", device.local);
                 json.number("last", device.last.getTime());
+                try (ArrayGen reserves = json.array("reserves")) {
+                    for (DeviceReserve r : device.getReserves()) {
+                        try (ObjectGen reserve = reserves.object()) {
+                            reserve.number("start", r.start.getTime());
+                            reserve.number("end", r.end.getTime());
+                        }
+                    }
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

@@ -1,3 +1,19 @@
+/**
+ * @param event {PointerEvent}
+ */
+function clickDevice(event) {
+    /**
+     * @type {HTMLTableRowElement}
+     */
+    let line = event.currentTarget;
+    /**
+     * @type {HTMLTableCellElement}
+     */
+    let id = line.firstElementChild;
+    let device = Number.parseInt(id.innerText);
+    location.href = "deviceReserve.html#" + device;
+}
+
 async function loadDevices(type, localLike) {
     let result = await ServerBridge.selectDevice(type, localLike);
     let header = document.getElementById("table_header");
@@ -12,6 +28,7 @@ async function loadDevices(type, localLike) {
         for (let i in devices) {
             let device = devices[i];
             let line = document.createElement("tr");
+            line.addEventListener("click", clickDevice);
             {
                 let item = document.createElement("td");
                 item.innerText = device.uuid + "";
