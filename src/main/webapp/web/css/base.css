@@ -54,7 +54,12 @@ input[type="password"] {
 
 }
 
+div {
+    cursor: default;
+}
+
 button {
+    cursor: pointer;
     border-radius: 3px;
     border-width: 1px;
     border-style: solid;

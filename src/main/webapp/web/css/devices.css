@@ -39,6 +39,7 @@
 }
 
 #device_table > tr {
+    cursor: pointer;
     transition: 400ms;
 }
 
