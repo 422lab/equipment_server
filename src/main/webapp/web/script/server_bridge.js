@@ -69,6 +69,20 @@ class ServerBridge {
         });
     }
 
+    /**
+     * 获取设备列表.
+     *
+     * @param type {number}
+     * @param localLike {string}
+     * @return {Promise<{code:number, devices:[{uuid:number, description:string, local:string, last:number, reserves:[{start:number, end:number}]}]}>}
+     */
+    static async selectDevice(type, localLike) {
+        return await ServerBridge.post("selectDevice", {
+            type: type,
+            localLike: localLike,
+        });
+    }
+
 }
 
 /**

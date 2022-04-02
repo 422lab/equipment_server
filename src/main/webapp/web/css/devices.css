@@ -26,5 +26,44 @@
 
 #content {
     width: 80%;
-    margin: 10px;
+    margin: 15px;
+}
+
+#device_table {
+    width: 100%;
+    table-layout: fixed;
+    border-width: 1px;
+    border-style: solid;
+    border-color: olive;
+    border-radius: 3px;
+}
+
+#device_table > tr {
+    transition: 400ms;
+}
+
+#device_table > tr:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+#device_table > tr > td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: olive;
+}
+
+#table_id {
+    width: 10%;
+}
+
+#table_desc {
+    width: 30%;
+}
+
+#table_local {
+    width: 30%;
+}
+
+#table_state {
+    width: 20%;
 }

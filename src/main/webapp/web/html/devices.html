@@ -8,7 +8,7 @@
     <link type="text/css" rel="stylesheet" href="../css/devices.css">
     <script type="text/javascript" src="../script/server_bridge.js"></script>
     <script type="text/javascript" src="../script/framework.js"></script>
-    <script type="text/javascript" src="../script/my_devices.js"></script>
+    <script type="text/javascript" src="../script/devices.js"></script>
 </head>
 <body>
 <div id="header">
@@ -43,13 +43,22 @@
             设备类型
         </div>
         <div id="type_list">
-            <div>
+            <button onclick="loadDevices(1, '%')">
                 通用电源插口
-            </div>
+            </button>
         </div>
     </div>
     <div id="content">
-        。。。
+        <table id="device_table">
+            <tbody id="table_header">
+            <tr>
+                <th id="table_id">编号</th>
+                <th id="table_desc">描述</th>
+                <th id="table_local">位置</th>
+                <th id="table_state">状态</th>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
