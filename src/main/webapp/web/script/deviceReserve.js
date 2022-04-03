@@ -42,7 +42,14 @@ addEventListener("load", async (event) => {
                 end: reserveEnd,
                 devices: [device]
             });
-            alert("OK");
+            switch (r.code) {
+                case 0:
+                    alert("预约成功" + r.success.length + "个设备");
+                    break;
+                default:
+                    alert("预约失败");
+            }
+            location.reload();
         }
     });
 });
