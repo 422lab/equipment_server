@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @WebServlet(name = "UserGetReserve", value = "/userGetReserve")
 public class UserGetReserveServlet extends BaseServlet {
@@ -22,6 +23,7 @@ public class UserGetReserveServlet extends BaseServlet {
         resp.setContentType("application/json;charset=utf-8");
         GetPostTools tools = new GetPostTools(req);
         ObjectGen json = new ObjectGen();
+        Timestamp now = Tools.currentTimestamp();
         try {
             String account = tools.getParameter("account");
             String password = tools.getParameter("password");
@@ -35,7 +37,7 @@ public class UserGetReserveServlet extends BaseServlet {
                 DeviceDao deviceDao = new DeviceDao(connection);
 
                 // 执行用户登录
-                User user = userDao.getUser(account);
+                User user = userDao.getUserForUpdate(account);
                 if (user == null) {
                     json.number("code", 2);
                     return;
@@ -45,6 +47,9 @@ public class UserGetReserveServlet extends BaseServlet {
                     return;
                 }
                 json.number("code", 0);
+                user.removeBefore(now);
+                userDao.updateUser(user);
+                connection.commit();
                 try (ObjectGen r = json.object("reserved")) {
                     user.getReserve().toJson(r);
                 }
