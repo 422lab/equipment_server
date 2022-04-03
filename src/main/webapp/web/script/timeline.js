@@ -9,7 +9,8 @@ class Timeline {
         this.begin = begin;
         this.end = end;
         this.inSelect = false;
-        div.addEventListener("mousedown", (event) => {
+        let list = div.querySelector(".timeline_list");
+        list.addEventListener("mousedown", (event) => {
             let select = div.querySelector(".timeline_select");
             if (select != null) {
                 this.selectInto = (event.clientX - div.offsetLeft) / div.clientWidth;
@@ -18,7 +19,7 @@ class Timeline {
                 this.inSelect = true;
             }
         });
-        div.addEventListener("mousemove", (event) => {
+        list.addEventListener("mousemove", (event) => {
             if (this.inSelect) {
                 let select = div.querySelector(".timeline_select");
                 if (select != null) {
@@ -27,6 +28,22 @@ class Timeline {
                     let max = Math.max(offset, this.selectInto);
                     select.style.left = min * 100 + "%";
                     select.style.right = (1 - max) * 100 + "%";
+                    if (this.onChange != null) {
+                        this.onChange(min, max);
+                    }
+                }
+            }
+        });
+        list.addEventListener("mouseout", (event) => {
+            if (event.target === event.currentTarget && this.inSelect) {
+                let select = div.querySelector(".timeline_select");
+                if (select != null) {
+                    let offset = (event.clientX - div.offsetLeft) / div.clientWidth;
+                    let min = Math.min(offset, this.selectInto);
+                    let max = Math.max(offset, this.selectInto);
+                    select.style.left = min * 100 + "%";
+                    select.style.right = (1 - max) * 100 + "%";
+                    this.inSelect = false;
                     if (this.onChange != null) {
                         this.onChange(min, max);
                     }
