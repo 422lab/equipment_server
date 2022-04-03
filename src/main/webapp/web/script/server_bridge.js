@@ -70,6 +70,38 @@ class ServerBridge {
     }
 
     /**
+     * 用户预约设备.
+     *
+     * @param reserves {{type:number, start:number, end:number, devices:[number]}}
+     * @return {Promise<{code:number, fails?:[number], success?:[number], start:number, end:number}>}
+     */
+    async userReserveDevice(reserves) {
+        return await ServerBridge.post("userReserveDevice", {
+            account: this.account,
+            password: this.password,
+            reserves: reserves,
+        });
+    }
+
+    /**
+     * 用户取消预约设备.
+     *
+     * @param device {number}
+     * @param start {number}
+     * @param end {number}
+     * @return {Promise<{code:number}>}
+     */
+    async userStopReserve(device, start, end) {
+        return await ServerBridge.post("userStopReserve", {
+            account: this.account,
+            password: this.password,
+            device: device,
+            start: start,
+            end: end,
+        });
+    }
+
+    /**
      * 获取设备列表.
      *
      * @param type {number}
@@ -87,7 +119,7 @@ class ServerBridge {
      * 获取设备描述.
      *
      * @param device {number}
-     * @return {Promise<{code:number, type?:number, description?:string, local?:string, last?:number}>}
+     * @return {Promise<{code:number, type?:number, description?:string, local?:string, last?:number, reserves?:[{start:number, end:number}]}>}
      */
     static async getDeviceDescription(device) {
         return await ServerBridge.post("getDeviceDescription", {

@@ -25,3 +25,45 @@
     border-bottom-color: olive;
     background: rgba(0, 0, 0, 0.1);
 }
+
+#my_device_list {
+    width: 100%;
+    table-layout: fixed;
+    padding: 10px;
+}
+
+#my_device_list > tr {
+    cursor: pointer;
+    transition: 400ms;
+}
+
+#my_device_list > tr:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+#my_device_list > tr > td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: olive;
+}
+
+#table_header {
+    width: 100%;
+}
+
+#table_type {
+    width: 20%;
+}
+
+#table_count {
+    width: 20%;
+}
+
+#table_start {
+    width: 20%;
+}
+
+#table_end {
+    width: 20%;
+}
+

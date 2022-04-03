@@ -1,0 +1,15 @@
+.timeline {
+    margin: 0 60px;
+}
+
+#begin {
+    display: inline;
+}
+
+#end {
+    display: inline;
+}
+
+button {
+    margin: 10px;
+}

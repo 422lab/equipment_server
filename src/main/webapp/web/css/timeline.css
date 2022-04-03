@@ -1,0 +1,37 @@
+
+.timeline {
+    position: relative;
+    display: block;
+    background: rgba(0, 0, 0, 0.1);
+    height: 40px;
+    user-select: none;
+}
+
+.timeline_list {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.timeline_select {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    background: darkcyan;
+    box-shadow: 0 1px 5px 0 rgba(35, 54, 86, 0.5);
+}
+
+.timeline_item {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+}

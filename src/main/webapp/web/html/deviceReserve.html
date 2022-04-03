@@ -5,8 +5,11 @@
     <title>设备预约</title>
     <link type="text/css" rel="stylesheet" href="../css/base.css">
     <link type="text/css" rel="stylesheet" href="../css/titles.css">
+    <link type="text/css" rel="stylesheet" href="../css/timeline.css">
+    <link type="text/css" rel="stylesheet" href="../css/deviceReserve.css">
     <script type="text/javascript" src="../script/server_bridge.js"></script>
     <script type="text/javascript" src="../script/framework.js"></script>
+    <script type="text/javascript" src="../script/timeline.js"></script>
     <script type="text/javascript" src="../script/deviceReserve.js"></script>
 </head>
 <body>
@@ -44,6 +47,16 @@
 <div id="device">
     未知设备
 </div>
-
+<div class="timeline">
+    <div class="timeline_list"></div>
+    <div class="timeline_select"></div>
+</div>
+开始时间
+<div id="begin"></div>
+<br/>
+结束时间
+<div id="end"></div>
+<br/>
+<button id="reserve">预约</button>
 </body>
 </html>
