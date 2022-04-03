@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @WebServlet(name = "GetDeviceDescription", value = "/getDeviceDescription")
@@ -24,6 +25,7 @@ public class GetDeviceDescriptionServlet extends BaseServlet {
         resp.setContentType("application/json;charset=utf-8");
         GetPostTools tools = new GetPostTools(req);
         ObjectGen json = new ObjectGen();
+        Timestamp now = Tools.currentTimestamp();
         try {
             int deviceId;
             try {
@@ -35,8 +37,9 @@ public class GetDeviceDescriptionServlet extends BaseServlet {
             }
 
             try (Connection connection = Tools.getConnection()) {
+                connection.setAutoCommit(false);
                 DeviceDao deviceDao = new DeviceDao(connection);
-                Device device = deviceDao.getDevice(deviceId);
+                Device device = deviceDao.getDeviceForUpdate(deviceId);
                 if (device == null) {
                     json.number("code", 2);
                     json.string("msg", "找不到设备");
@@ -47,6 +50,13 @@ public class GetDeviceDescriptionServlet extends BaseServlet {
                 json.string("description", device.description);
                 json.string("local", device.local);
                 json.number("last", device.last.getTime());
+
+                // 当试图移除过时的预约成功时说明存在用户切换
+                if (device.reserveRemoveBefore(now)) {
+                    // 这时需要重置控制字符串为默认值
+                    device.control = "{}";
+                }
+
                 try (ArrayGen reserves = json.array("reserves")) {
                     for (DeviceReserve r : device.getReserves()) {
                         try (ObjectGen reserve = reserves.object()) {
@@ -55,6 +65,8 @@ public class GetDeviceDescriptionServlet extends BaseServlet {
                         }
                     }
                 }
+                deviceDao.updateDevice(device);
+                connection.commit();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
