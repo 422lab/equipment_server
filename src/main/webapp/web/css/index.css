@@ -48,26 +48,3 @@
     padding: 0 40px;
     color: red;
 }
-
-#loginHit {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-#loginHit > .loginHitBlock {
-    border-radius: 3px;
-    border-width: 0;
-    border-style: solid;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    padding: 8px;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    background: beige;
-    display: block;
-}

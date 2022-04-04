@@ -7,12 +7,12 @@ async function login(event) {
     let account = document.getElementById("account").value;
     let password = document.getElementById("password").value;
     let bridge = new ServerBridge(account, password);
-    let hit = document.getElementById("loginHit");
-    hit.style.display = "inline-block";
+    let toast = new Toast().text("登录中");
+    toast.show();
     let failHit = document.getElementById("failHit");
     failHit.style.visibility = "hidden";
     let result = await bridge.userLogin();
-    hit.style.display = "none";
+    toast.remove();
     if (result.code === 0) {
         sessionStorage.setItem("account", account);
         sessionStorage.setItem("password", password);
