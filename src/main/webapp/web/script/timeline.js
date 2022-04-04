@@ -30,7 +30,7 @@ class Timeline {
         }
         let select = this.div.querySelector(".timeline_select");
         if (select != null) {
-            this.selectInto = (x - this.div.offsetLeft) / this.div.clientWidth;
+            this.selectInto = Math.min(Math.max(0, (x - this.div.offsetLeft) / this.div.clientWidth), 1);
             select.style.left = this.selectInto * 100 + "%";
             select.style.right = (1 - this.selectInto) * 100 + "%";
             this.inSelect = true;
@@ -45,7 +45,7 @@ class Timeline {
         if (this.inSelect) {
             let select = this.div.querySelector(".timeline_select");
             if (select != null) {
-                let offset = (x - this.div.offsetLeft) / this.div.clientWidth;
+                let offset = Math.min(Math.max(0, (x - this.div.offsetLeft) / this.div.clientWidth), 1);
                 let min = Math.min(offset, this.selectInto);
                 let max = Math.max(offset, this.selectInto);
                 select.style.left = min * 100 + "%";
@@ -66,7 +66,7 @@ class Timeline {
             console.log(event.target, event.currentTarget);
             let select = this.div.querySelector(".timeline_select");
             if (select != null) {
-                let offset = (x - this.div.offsetLeft) / this.div.clientWidth;
+                let offset = Math.min(Math.max(0, (x - this.div.offsetLeft) / this.div.clientWidth), 1);
                 let min = Math.min(offset, this.selectInto);
                 let max = Math.max(offset, this.selectInto);
                 select.style.left = min * 100 + "%";
