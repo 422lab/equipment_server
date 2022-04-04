@@ -21,6 +21,9 @@ async function loadDevices(type, localLike) {
         header.nextElementSibling.remove();
     }
 
+    let now = new Date().getTime();
+    let right = now + 60 * 60 * 1000;
+
     let table = document.getElementById("device_table");
     if (result.code === 0) {
         let table = document.getElementById("device_table");
@@ -47,6 +50,19 @@ async function loadDevices(type, localLike) {
             {
                 let item = document.createElement("td");
                 item.innerText = device.last + "";
+                line.append(item);
+            }
+            {
+                let item = document.createElement("td");
+                {
+                    let timeline = document.createElement("div");
+                    timeline.classList.add("timeline");
+                    let list = document.createElement("div");
+                    list.classList.add("timeline_list");
+                    timeline.append(list);
+                    new Timeline(timeline, now, right).load(device.reserves);
+                    item.append(timeline);
+                }
                 line.append(item);
             }
             table.append(line);

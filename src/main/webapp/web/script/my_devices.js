@@ -19,7 +19,7 @@ addEventListener("load", async (event) => {
             let line = document.createElement("tr");
             {
                 let node = document.createElement("td");
-                node.innerText = item.type + "";
+                node.innerText = deviceTypeName(item.type);
                 line.append(node);
             }
             {

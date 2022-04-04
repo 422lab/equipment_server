@@ -10,62 +10,76 @@ class Timeline {
         this.end = end;
         this.inSelect = false;
         let list = div.querySelector(".timeline_list");
-        list.addEventListener("mousedown", (event) => {
-            let select = div.querySelector(".timeline_select");
+        list.addEventListener("mousedown", event => this.startEvent(event, event.clientX));
+        list.addEventListener("touchstart", event => this.startEvent(event, event.touches[0].clientX));
+
+        list.addEventListener("mousemove", event => this.moveEvent(event, event.clientX));
+        list.addEventListener("touchmove", event => this.moveEvent(event, event.touches[0].clientX));
+
+        list.addEventListener("mouseout", event => {
+            if (event.target === event.currentTarget) {
+                this.endEvent(event, event.clientX);
+            }
+            return false;
+        });
+
+        list.addEventListener("mouseup", event => this.endEvent(event, event.clientX));
+        list.addEventListener("touchend", event => this.endEvent(event, event.changedTouches[0].clientX));
+    }
+
+    startEvent(event, x) {
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+        let select = this.div.querySelector(".timeline_select");
+        if (select != null) {
+            this.selectInto = (x - this.div.offsetLeft) / this.div.clientWidth;
+            select.style.left = this.selectInto * 100 + "%";
+            select.style.right = (1 - this.selectInto) * 100 + "%";
+            this.inSelect = true;
+        }
+        return false;
+    }
+
+    moveEvent(event, x) {
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+        if (this.inSelect) {
+            let select = this.div.querySelector(".timeline_select");
             if (select != null) {
-                this.selectInto = (event.clientX - div.offsetLeft) / div.clientWidth;
-                select.style.left = this.selectInto * 100 + "%";
-                select.style.right = (1 - this.selectInto) * 100 + "%";
-                this.inSelect = true;
-            }
-        });
-        list.addEventListener("mousemove", (event) => {
-            if (this.inSelect) {
-                let select = div.querySelector(".timeline_select");
-                if (select != null) {
-                    let offset = (event.clientX - div.offsetLeft) / div.clientWidth;
-                    let min = Math.min(offset, this.selectInto);
-                    let max = Math.max(offset, this.selectInto);
-                    select.style.left = min * 100 + "%";
-                    select.style.right = (1 - max) * 100 + "%";
-                    if (this.onChange != null) {
-                        this.onChange(min, max);
-                    }
+                let offset = (x - this.div.offsetLeft) / this.div.clientWidth;
+                let min = Math.min(offset, this.selectInto);
+                let max = Math.max(offset, this.selectInto);
+                select.style.left = min * 100 + "%";
+                select.style.right = (1 - max) * 100 + "%";
+                if (this.onChange != null) {
+                    this.onChange(min, max);
                 }
             }
-        });
-        list.addEventListener("mouseout", (event) => {
-            if (event.target === event.currentTarget && this.inSelect) {
-                let select = div.querySelector(".timeline_select");
-                if (select != null) {
-                    let offset = (event.clientX - div.offsetLeft) / div.clientWidth;
-                    let min = Math.min(offset, this.selectInto);
-                    let max = Math.max(offset, this.selectInto);
-                    select.style.left = min * 100 + "%";
-                    select.style.right = (1 - max) * 100 + "%";
-                    this.inSelect = false;
-                    if (this.onChange != null) {
-                        this.onChange(min, max);
-                    }
+        }
+        return false;
+    }
+
+    endEvent(event, x) {
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+        if (this.inSelect) {
+            let select = this.div.querySelector(".timeline_select");
+            if (select != null) {
+                let offset = (x - this.div.offsetLeft) / this.div.clientWidth;
+                let min = Math.min(offset, this.selectInto);
+                let max = Math.max(offset, this.selectInto);
+                select.style.left = min * 100 + "%";
+                select.style.right = (1 - max) * 100 + "%";
+                this.inSelect = false;
+                if (this.onChange != null) {
+                    this.onChange(min, max);
                 }
             }
-        });
-        div.addEventListener("mouseup", (event) => {
-            if (this.inSelect) {
-                let select = div.querySelector(".timeline_select");
-                if (select != null) {
-                    let offset = (event.clientX - div.offsetLeft) / div.clientWidth;
-                    let min = Math.min(offset, this.selectInto);
-                    let max = Math.max(offset, this.selectInto);
-                    select.style.left = min * 100 + "%";
-                    select.style.right = (1 - max) * 100 + "%";
-                    this.inSelect = false;
-                    if (this.onChange != null) {
-                        this.onChange(min, max);
-                    }
-                }
-            }
-        });
+        }
+        return false;
     }
 
     /**

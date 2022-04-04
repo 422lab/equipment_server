@@ -2,6 +2,10 @@
     margin: 0 60px;
 }
 
+#device {
+    margin: 20px;
+}
+
 #begin {
     display: inline;
 }

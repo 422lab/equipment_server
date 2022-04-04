@@ -143,3 +143,18 @@ function userTypeName(type) {
             return "[未知用户]";
     }
 }
+
+/**
+ * 设备类型转 string.
+ *
+ * @param type {number}
+ * @return {string}
+ */
+function deviceTypeName(type) {
+    switch (type) {
+        case 1:
+            return "通用电源插口";
+        default:
+            return "未知设备类型";
+    }
+}

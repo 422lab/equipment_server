@@ -68,3 +68,11 @@
 #table_state {
     width: 20%;
 }
+
+#table_timeline {
+    width: 20%;
+}
+
+.timeline {
+    height: 20px;
+}
