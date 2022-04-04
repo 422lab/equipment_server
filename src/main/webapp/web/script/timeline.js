@@ -9,22 +9,19 @@ class Timeline {
         this.begin = begin;
         this.end = end;
         this.inSelect = false;
-        let list = div.querySelector(".timeline_list");
-        list.addEventListener("mousedown", event => this.startEvent(event, event.clientX));
-        list.addEventListener("touchstart", event => this.startEvent(event, event.touches[0].clientX));
+        let block = div.querySelector(".timeline_select_block");
+        if (block != null) {
+            block.addEventListener("mousedown", event => this.startEvent(event, event.clientX));
+            block.addEventListener("touchstart", event => this.startEvent(event, event.touches[0].clientX));
 
-        list.addEventListener("mousemove", event => this.moveEvent(event, event.clientX));
-        list.addEventListener("touchmove", event => this.moveEvent(event, event.touches[0].clientX));
+            block.addEventListener("mousemove", event => this.moveEvent(event, event.clientX));
+            block.addEventListener("touchmove", event => this.moveEvent(event, event.touches[0].clientX));
 
-        list.addEventListener("mouseout", event => {
-            if (event.target === event.currentTarget) {
-                this.endEvent(event, event.clientX);
-            }
-            return false;
-        });
+            block.addEventListener("mouseout", event => this.endEvent(event, event.clientX));
 
-        list.addEventListener("mouseup", event => this.endEvent(event, event.clientX));
-        list.addEventListener("touchend", event => this.endEvent(event, event.changedTouches[0].clientX));
+            block.addEventListener("mouseup", event => this.endEvent(event, event.clientX));
+            block.addEventListener("touchend", event => this.endEvent(event, event.changedTouches[0].clientX));
+        }
     }
 
     startEvent(event, x) {
@@ -66,6 +63,7 @@ class Timeline {
             event.preventDefault();
         }
         if (this.inSelect) {
+            console.log(event.target, event.currentTarget);
             let select = this.div.querySelector(".timeline_select");
             if (select != null) {
                 let offset = (x - this.div.offsetLeft) / this.div.clientWidth;

@@ -12,7 +12,7 @@ class Toast {
         div.style.left = "0";
         div.style.width = "100%";
         div.style.height = "100%";
-        div.style.background = "rgba(0, 0, 0, 0.3";
+        div.style.background = "rgba(0, 0, 0, 0.3)";
         {
             let hit = this.hit = document.createElement("div");
             hit.style.borderRadius = "3px";
@@ -25,7 +25,6 @@ class Toast {
             hit.style.left = "50%";
             hit.style.top = "50%";
             hit.style.background = "beige";
-            hit.style.display = "block";
             div.append(hit);
         }
     }
@@ -36,6 +35,11 @@ class Toast {
 
     text(text) {
         this.hit.innerText = text;
+        return this;
+    }
+
+    time(ms) {
+        this.ms = ms;
         return this;
     }
 

@@ -44,12 +44,17 @@ addEventListener("load", async (event) => {
                 end: reserveEnd,
                 devices: [device]
             });
+            console.log(r);
             switch (r.code) {
                 case 0:
-                    alert("预约成功" + r.success.length + "个设备");
+                    await new Toast().text("预约成功" + r.success.length + "个设备").time(3000).showAndSleep();
+                    break;
+                case 4:
+                    await new Toast().text("预约失败 (注意: 每个学习同一时间同种设备只能预约一个)").time(3000).showAndSleep();
                     break;
                 default:
-                    alert("预约失败");
+                    await new Toast().text("预约失败").time(3000).showAndSleep();
+                    break;
             }
             location.reload();
         }
