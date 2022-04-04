@@ -1,8 +1,9 @@
 let hash = location.hash.match(/\d+/);
 if (hash == null) {
     location.href = "devices.html";
+} else {
+    let device = Number.parseInt(hash[0]);
 }
-let device = Number.parseInt(hash[0]);
 
 /**
  * @type {Timeline}

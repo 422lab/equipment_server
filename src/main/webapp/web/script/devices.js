@@ -49,7 +49,14 @@ async function loadDevices(type, localLike) {
             }
             {
                 let item = document.createElement("td");
-                item.innerText = device.last + "";
+                let delta = Math.abs(device.last - now);
+                let state;
+                if (delta < 1000 * 60 * 60) {
+                    state = "在线";
+                } else {
+                    state = "离线";
+                }
+                item.innerText = state;
                 line.append(item);
             }
             {
