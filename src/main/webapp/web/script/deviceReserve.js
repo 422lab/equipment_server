@@ -1,8 +1,9 @@
 let hash = location.hash.match(/\d+/);
+let device;
 if (hash == null) {
     location.href = "devices.html";
 } else {
-    let device = Number.parseInt(hash[0]);
+    device = Number.parseInt(hash[0]);
 }
 
 /**
