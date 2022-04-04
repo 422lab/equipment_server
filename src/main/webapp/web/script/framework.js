@@ -3,6 +3,7 @@ let password = sessionStorage.getItem("password");
 let username = sessionStorage.getItem("username");
 let usertype = Number.parseInt(sessionStorage.getItem("usertype"));
 if (username == null) {
+    sessionStorage.setItem("nextURL", location.href);
     location.href = "index.html";
 }
 let bridge = new ServerBridge(account, password);

@@ -18,7 +18,13 @@ async function login(event) {
         sessionStorage.setItem("password", password);
         sessionStorage.setItem("username", result.name);
         sessionStorage.setItem("usertype", result.type.toString());
-        location.href = "my_devices.html";
+        let next = sessionStorage.getItem("nextURL");
+        if (next == null) {
+            next = "my_devices.html";
+        } else {
+            sessionStorage.removeItem("nextURL");
+        }
+        location.href = next;
         return;
     }
     failHit.style.visibility = "visible";
